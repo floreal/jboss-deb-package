@@ -1,0 +1,45 @@
+#!/bin/sh
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <postinst> `abort-remove'
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+
+case "$1" in
+    configure)
+    
+        # Create jboss user if it doesn't exist.
+        if ! id jboss > /dev/null 2>&1 ; then
+            adduser --system --home /var/lib/jboss --no-create-home \
+                --ingroup nogroup --disabled-password --shell /bin/bash \
+                jboss
+        fi
+        
+        chown -R jboss /var/lib/jboss /var/log/jboss
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+if [ -x "/etc/init.d/jboss" ]; then
+	update-rc.d jboss defaults >/dev/null
+	invoke-rc.d jboss start || exit $?
+fi
+
+exit 0

@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+if [ -x "/etc/init.d/selenium-server" ]; then
+	invoke-rc.d jboss stop || exit $?
+fi

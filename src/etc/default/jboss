@@ -1,0 +1,32 @@
+#define where jboss is - this is the directory containing directories log, bin, conf etc
+JBOSS_HOME=${JBOSS_HOME:-"/var/lib/jboss"}
+
+#define the user under which jboss will run, or use 'RUNASIS' to run as the current user
+JBOSS_USER=${JBOSS_USER:-"jboss"}
+
+#make sure java is in your path
+#this must be set even if java is in a well-known place like /usr/bin
+JAVAPTH=${JAVAPTH:-"/usr/bin"}
+
+#configuration to use, usually one of 'minimal', 'default', 'all'
+JBOSS_CONF=${JBOSS_CONF:-"default"}
+
+#if JBOSS_HOST specified, use -b to bind jboss services to that address
+# JBOSS_BIND_ADDR=${JBOSS_HOST:+"-b $JBOSS_HOST"}
+JBOSS_BIND_ADDR=${JBOSS_HOST:-"-b 0.0.0.0"}
+
+#define the script to use to start jboss
+JBOSSSH=${JBOSSSH:-"$JBOSS_HOME/bin/run.sh -c $JBOSS_CONF $JBOSS_BIND_ADDR"}
+
+#pid
+PIDFILE=/var/run/jboss/jboss.pid
+
+#ports
+HTTPS_PORT=8443
+HTTP_PORT=8080
+
+#logs directory
+JBOSS_LOGS=/var/log/jboss
+
+#options
+JBOSS_ARGS="-Djboss.server.log.dir=$JBOSS_LOGS -Djboss.http=$HTTP_PORT -Djboss.https=$HTTPS_PORT"

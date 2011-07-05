@@ -1,0 +1,8 @@
+Package: jboss
+Version: 6.0.0
+Section: net
+Priority: extra
+Architecture: all
+Depends: default-jre-headless
+Maintainer: Floréal Toumikian <ftoumikian@april.org>
+Description: JBoss Application Server
